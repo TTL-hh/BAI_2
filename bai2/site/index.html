@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Danh sách sinh viên</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 600px; margin: 40px auto; padding: 0 16px; }
+    li { padding: 4px 0; }
+  </style>
+</head>
+<body>
+  <h1>Danh sách sinh viên</h1>
+  <p id="status">Đang tải...</p>
+  <ul id="list"></ul>
+  <p><strong id="total"></strong></p>
+
+  <script>
+    fetch('/api/tacke')
+      .then(res => res.json())
+      .then(data => {
+        if (data.ok !== 1) throw new Error(data.msg);
+        document.getElementById('status').textContent = data.msg;
+        const ul = document.getElementById('list');
+        data.dssv.forEach(sv => {
+          const li = document.createElement('li');
+          li.textContent = `#${sv.rank} ${sv.name}: ${sv.money}`;
+          ul.appendChild(li);
+        });
+        document.getElementById('total').textContent = 'Tổng tiền: ' + data.tong;
+      })
+      .catch(err => {
+        document.getElementById('status').textContent = 'Lỗi: ' + err.message;
+      });
+  </script>
+</body>
+</html>

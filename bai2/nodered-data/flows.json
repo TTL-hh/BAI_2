@@ -1,0 +1,59 @@
+[
+  {
+    "id": "tab1",
+    "type": "tab",
+    "label": "API tacke",
+    "disabled": false,
+    "info": ""
+  },
+  {
+    "id": "in1",
+    "type": "http in",
+    "z": "tab1",
+    "name": "GET /api/tacke",
+    "url": "/api/tacke",
+    "method": "get",
+    "upload": false,
+    "swaggerDoc": "",
+    "x": 150,
+    "y": 80,
+    "wires": [
+      [
+        "fn1"
+      ]
+    ]
+  },
+  {
+    "id": "fn1",
+    "type": "function",
+    "z": "tab1",
+    "name": "tao du lieu + thuat toan",
+    "func": "// Thuat toan: sap xep sinh vien theo money giam dan, them tong tien va xep hang\nconst dssv = [\n    { name: \"Cốp\", money: 123 },\n    { name: \"David\", money: 456 },\n    { name: \"Lan\", money: 300 }\n];\n\ndssv.sort((a, b) => b.money - a.money);\ndssv.forEach((sv, i) => { sv.rank = i + 1; });\n\nconst tong = dssv.reduce((s, sv) => s + sv.money, 0);\n\nmsg.payload = { ok: 1, msg: \"thành công\", tong: tong, dssv: dssv };\nmsg.statusCode = 200;\nreturn msg;",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 390,
+    "y": 80,
+    "wires": [
+      [
+        "out1"
+      ]
+    ]
+  },
+  {
+    "id": "out1",
+    "type": "http response",
+    "z": "tab1",
+    "name": "",
+    "statusCode": "",
+    "headers": {
+      "Content-Type": "application/json; charset=utf-8"
+    },
+    "x": 630,
+    "y": 80,
+    "wires": []
+  }
+]
